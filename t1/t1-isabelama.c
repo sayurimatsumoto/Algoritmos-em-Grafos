@@ -1,9 +1,11 @@
 #include<stdio.h>
+#include <stdlib.h>
 typedef struct listaAdj {
 	int color;
-	int adjacentes[2001];
+	int adjacentes[2000];
 	int numAdj;
-	int visitado;	
+	int visitado;
+	int num;	
 }ListaAdj;
 
 int isBipartite(ListaAdj grafo[], int numAlunos);
@@ -18,23 +20,37 @@ int main(){
 			return 0;
 		}
 		ListaAdj grafo[numAlunos+1];
-
+		/*for(i = 0; i < numAlunos; i++){
+			grafo[i].adjacentes = (int *) malloc (sizeof(int) * (numPares + 1));
+		}	*/
 		for(i = 0; i <= numAlunos; i++){
 			grafo[i].color = 0;
 			grafo[i].numAdj = 0;
 			grafo[i].visitado = 0;
+			grafo[i].num = i;
 		}
 		for(i = 0; i < numPares; i++){
 			scanf("%d %d", &u, &v);
 			grafo[u].adjacentes[grafo[u].numAdj] = v;
 			grafo[u].numAdj++;
+			grafo[v].adjacentes[grafo[v].numAdj] = u;
+			grafo[v].numAdj++;
 		}
-		
+		/*for(i = 0; i <= numAlunos; i++){
+			printf("%d = ", grafo[i].num);
+			for(int k = 0; k < grafo[i].numAdj; k++){
+				printf("%d ", grafo[i].adjacentes[k]);
+			}
+			printf("\n");
+		}*/
 		if(isBipartite(grafo, numAlunos)){
 			printf("SIM\n");
 		}else{
 			printf("NAO\n");
 		}
+		/*for(i = 0; i< numAlunos; i++){
+			free(grafo[i].adjacentes);
+		}*/
 		
 	}
 
