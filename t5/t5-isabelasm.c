@@ -34,7 +34,7 @@ int main(){
 			grafo[i].s = 1;
 			minCusto[i] = i;
 		}else{
-			grafo[i].dist = -1;
+			grafo[i].dist = -1; // -1 = a infinito
 			grafo[i].s = 1;
 			minCusto[i] = -1;
 		}
@@ -44,13 +44,19 @@ int main(){
 		// de u a v
 		scanf("%d %d %d", &u, &v, &custo);
 		grafo[u].adj[grafo[u].numAdj].num = v;
-		grafo[u].numAdj++;
 		grafo[u].adj[grafo[u].numAdj].custo = custo;
+		grafo[u].numAdj++;
 		// de v a u
 		grafo[v].adj[grafo[v].numAdj].num = u;
-		grafo[v].numAdj++;
 		grafo[v].adj[grafo[v].numAdj].custo = custo;
+		grafo[v].numAdj++;
 	}
+	// for(i = 0; i < n; i++){
+	// 	printf("\nnó %d\nlista de adj = ", i);
+	// 	for(int j = 0; j < grafo[i].numAdj; j++){
+	// 		printf("%d custo %d ", grafo[i].adj[j].num, grafo[i].adj[j].custo);
+	// 	}
+	// }
 
 	dijkstra(grafo, minCusto, n);
 
@@ -73,16 +79,16 @@ int dijkstra(ListaAdj grafo[], int *minCusto, int n){
 		//printf("AAAAAAAAAAAA\n");
 		for(i = 0; i < grafo[u].numAdj; i++){
 			v = grafo[u].adj[i].num;
-			if(grafo[v].s == 1){
+			if(grafo[v].s != 0){
 				if(grafo[v].dist == -1){
-					grafo[v].dist = grafo[u].dist + grafo[u].adj[v].custo;
+					grafo[v].dist = grafo[u].dist + grafo[u].adj[i].custo;
 					minCusto[v] = minCusto[u];
 
-				}else if(grafo[v].dist > grafo[u].dist + grafo[u].adj[v].custo){
-					grafo[v].dist = grafo[u].dist + grafo[u].adj[v].custo;
+				}else if(grafo[v].dist > grafo[u].dist + grafo[u].adj[i].custo){
+					grafo[v].dist = grafo[u].dist + grafo[u].adj[i].custo;
 					minCusto[v] = minCusto[u];
 
-				}else if(grafo[v].dist == grafo[u].dist + grafo[u].adj[v].custo && minCusto[v] > minCusto[u]){
+				}else if(grafo[v].dist == grafo[u].dist + grafo[u].adj[i].custo && minCusto[v] > minCusto[u]){
 						minCusto[v] = minCusto[u];
 				}
 			}
